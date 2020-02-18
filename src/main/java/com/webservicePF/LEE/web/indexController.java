@@ -1,5 +1,6 @@
 package com.webservicePF.LEE.web;
 
+import com.webservicePF.LEE.config.auth.dto.SessionUser;
 import com.webservicePF.LEE.service.posts.PostsService;
 import com.webservicePF.LEE.web.dto.PostsResponseDto;
 import lombok.AllArgsConstructor;
@@ -8,18 +9,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @AllArgsConstructor
 public class indexController {
 
     private final PostsService postsService;
+    private final HttpSession httpSession;
 
     @GetMapping("/")
     public String index(Model model/*, @LoginUser SessionUser user*/) {
         model.addAttribute("posts", postsService.findAllDesc());
-/*        if (user != null) {
+
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+        if (user != null) {
             model.addAttribute("userName", user.getName());
-        }*/
+        }
         return "index";
     }
 
